@@ -8,5 +8,9 @@ require libstd-rs.inc
 #    file://0003-FIXUP-Correct-definitions-to-match-musl.patch;patchdir=../../ \
 #    file://0004-Update-1.51.0-checksums-for-modified-files.patch;patchdir=../../ \
 #"
+
+SRC_URI += "file://0001-no-outline-atomics.patch;patchdir=../../ \
+"
+
 # libstd moved from src/libstd to library/std in 1.47+
 S = "${RUSTSRC}/library/std"

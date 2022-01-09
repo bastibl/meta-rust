@@ -1,11 +1,13 @@
-From 8a642578cd316b45fbf7222845646eb3b9d93178 Mon Sep 17 00:00:00 2001
+From 3f0a37066d74cd98d421af0ac97eb3b60a4df6f6 Mon Sep 17 00:00:00 2001
 From: Bastian Bloessl <mail@bastibl.net>
 Date: Sat, 8 Jan 2022 19:49:53 +0100
 Subject: [PATCH] no outline-atomics
 
 ---
- compiler/rustc_codegen_llvm/src/llvm_util.rs | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ compiler/rustc_codegen_llvm/src/llvm_util.rs       | 14 +++++++-------
+ .../clang/lib/Driver/ToolChains/Clang.cpp          |  8 ++++----
+ .../llvm/lib/Target/AArch64/AArch64.td             |  2 +-
+ 3 files changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/compiler/rustc_codegen_llvm/src/llvm_util.rs b/compiler/rustc_codegen_llvm/src/llvm_util.rs
 index c2136f161..af483616c 100644
@@ -32,6 +34,45 @@ index c2136f161..af483616c 100644
  
      features
  }
+diff --git a/src/llvm-project/clang/lib/Driver/ToolChains/Clang.cpp b/src/llvm-project/clang/lib/Driver/ToolChains/Clang.cpp
+index 58ae08a38..833fcc18f 100644
+--- a/src/llvm-project/clang/lib/Driver/ToolChains/Clang.cpp
++++ b/src/llvm-project/clang/lib/Driver/ToolChains/Clang.cpp
+@@ -6787,8 +6787,8 @@ void Clang::ConstructJob(Compilation &C, const JobAction &JA,
+         D.Diag(diag::warn_drv_moutline_atomics_unsupported_opt)
+             << Triple.getArchName();
+       } else {
+-        CmdArgs.push_back("-target-feature");
+-        CmdArgs.push_back("+outline-atomics");
++        //CmdArgs.push_back("-target-feature");
++        //CmdArgs.push_back("+outline-atomics");
+       }
+     } else {
+       CmdArgs.push_back("-target-feature");
+@@ -6796,8 +6796,8 @@ void Clang::ConstructJob(Compilation &C, const JobAction &JA,
+     }
+   } else if (Triple.isAArch64() &&
+              getToolChain().IsAArch64OutlineAtomicsDefault(Args)) {
+-    CmdArgs.push_back("-target-feature");
+-    CmdArgs.push_back("+outline-atomics");
++    //CmdArgs.push_back("-target-feature");
++    //CmdArgs.push_back("+outline-atomics");
+   }
+ 
+   if (Args.hasFlag(options::OPT_faddrsig, options::OPT_fno_addrsig,
+diff --git a/src/llvm-project/llvm/lib/Target/AArch64/AArch64.td b/src/llvm-project/llvm/lib/Target/AArch64/AArch64.td
+index d8dd9d1b2..777ec85c5 100644
+--- a/src/llvm-project/llvm/lib/Target/AArch64/AArch64.td
++++ b/src/llvm-project/llvm/lib/Target/AArch64/AArch64.td
+@@ -61,7 +61,7 @@ def FeatureRAS : SubtargetFeature<"ras", "HasRAS", "true",
+ def FeatureLSE : SubtargetFeature<"lse", "HasLSE", "true",
+   "Enable ARMv8.1 Large System Extension (LSE) atomic instructions">;
+ 
+-def FeatureOutlineAtomics : SubtargetFeature<"outline-atomics", "OutlineAtomics", "true",
++def FeatureOutlineAtomics : SubtargetFeature<"outline-atomics", "OutlineAtomics", "false",
+   "Enable out of line atomics to support LSE instructions">;
+ 
+ def FeatureRDM : SubtargetFeature<"rdm", "HasRDM", "true",
 -- 
 2.30.2
 
