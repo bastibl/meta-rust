@@ -13,4 +13,5 @@ SRC_URI += "file://0001-no-outline-atomics.patch;patchdir=../../ \
 "
 
 # libstd moved from src/libstd to library/std in 1.47+
-S = "${RUSTSRC}/library/std"
+#S = "${RUSTSRC}/library/std"
+S = "${RUSTSRC}/library/test"
